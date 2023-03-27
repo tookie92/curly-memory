@@ -36,14 +36,14 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
      
 
       
-
+  
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.setPixelRatio(window.devicePixelRatio);
 			document.body.appendChild( renderer.domElement );
 
       const pmremGenerator = new THREE.PMREMGenerator( renderer );
-      scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+      scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.02 ).texture;
 
 
 
@@ -62,19 +62,35 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
         loader.load( 'glt/chance/poly/hand.glb', function ( gltf ) {
           const model = gltf.scene;
           model.position.set(1,0,2);
-          model.scale.set(0.5, 0.5,0.5);
+          //model.scale.set(0.6,0.5,0.5);
           scene.add( gltf.scene );  
   
          
 
           mixer = new THREE.AnimationMixer(model);
+         // const rotating = mixer.clipAction(gltf.animations[0]);
+        // const idleCLip = new THREE.AnimationClip.findByName(gltf.animations[0], 'Idle')
           const rotating = mixer.clipAction(gltf.animations[0]);
           rotating.play();
           rotating.loop = THREE.LoopOnce;
 
+          const second = mixer.clipAction(gltf.animations[2]);
+          second.play();
+          second.loop = THREE.LoopOnce;
 
-          mixer.addEventListener('is finished', (e)=>{
-            window.alert('Animation is Finished');
+
+
+          mixer.addEventListener('finished', function(e){
+            if(e.clipAction(gltf.animations[0])){
+              rotating.reset();
+              rotating.play();
+            }
+            else if(e.clipAction(gltf.animations[1])){
+              second.reset();
+              second.play();
+            }
+           
+            
           })
         }, undefined, function ( error ) {
           console.error( error );
