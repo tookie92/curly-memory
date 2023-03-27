@@ -6,18 +6,17 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 
- //Secene declared
-
-
+       //Scene declared
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xbfe3dd)
+      const container = document.getElementById('container');
+      document.body.appendChild(container);
       
 
       //Camera
 			const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
       camera.position.set(5,2,9);
       camera.lookAt(0,2,0)
-      const mixers = [];
       let mixer; 
       const clock = new THREE.Clock();
 
@@ -40,7 +39,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.setPixelRatio(window.devicePixelRatio);
-			document.body.appendChild( renderer.domElement );
+			container.appendChild( renderer.domElement );
 
       const pmremGenerator = new THREE.PMREMGenerator( renderer );
       scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.02 ).texture;
@@ -62,14 +61,11 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
         loader.load( 'glt/chance/poly/hand.glb', function ( gltf ) {
           const model = gltf.scene;
           model.position.set(1,0,2);
-          //model.scale.set(0.6,0.5,0.5);
           scene.add( gltf.scene );  
   
          
 
           mixer = new THREE.AnimationMixer(model);
-         // const rotating = mixer.clipAction(gltf.animations[0]);
-        // const idleCLip = new THREE.AnimationClip.findByName(gltf.animations[0], 'Idle')
           const rotating = mixer.clipAction(gltf.animations[0]);
           rotating.play();
           rotating.loop = THREE.LoopOnce;
