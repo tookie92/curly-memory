@@ -80,7 +80,7 @@ import {ARButton} from 'three/addons/webxr/ARButton.js';
           mixer.addEventListener('finished', function(e){
             if(e.clipAction(gltf.animations[0])){
               rotating.reset();
-              rotating.play();
+            rotating.play();
             }
             else if(e.clipAction(gltf.animations[1])){
               second.reset();
