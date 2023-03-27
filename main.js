@@ -12,7 +12,8 @@ import {ARButton} from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARBut
 
       const scene = new THREE.Scene();
       //scene.background = new THREE.Color(0xbfe3dd)
-      
+      const container = document.getElementById('container');
+
 
       //Camera
 			const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -43,7 +44,7 @@ import {ARButton} from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARBut
       renderer.setPixelRatio(window.devicePixelRatio);
       //important line for webxr
       renderer.xr.enabled = true;
-			document.body.appendChild( renderer.domElement );
+			container.appendChild(renderer.domElement);
 
       const pmremGenerator = new THREE.PMREMGenerator( renderer );
       scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.02 ).texture;
