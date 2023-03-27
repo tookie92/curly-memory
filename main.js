@@ -64,7 +64,7 @@ import {ARButton} from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARBut
 			const loader = new GLTFLoader();
         loader.load( 'glt/chance/poly/hand.glb', function ( gltf ) {
           const model = gltf.scene;
-       model.position.set(0,0,20);
+          model.position.set(0,-1.5,-5);
           //model.scale.set(0.6,0.5,0.5);
           scene.add( gltf.scene );  
           
