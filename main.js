@@ -5,12 +5,13 @@ import gsap from "gsap"
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {ARButton} from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
  //Secene declared
 
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xbfe3dd)
+      //scene.background = new THREE.Color(0xbfe3dd)
       
 
       //Camera
@@ -40,6 +41,8 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.setPixelRatio(window.devicePixelRatio);
+      //important line for webxr
+      renderer.xr.enabled = true;
 			document.body.appendChild( renderer.domElement );
 
       const pmremGenerator = new THREE.PMREMGenerator( renderer );
@@ -61,7 +64,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 			const loader = new GLTFLoader();
         loader.load( 'glt/chance/poly/hand.glb', function ( gltf ) {
           const model = gltf.scene;
-          model.position.set(1,0,2);
+       model.position.set(0,0,20);
           //model.scale.set(0.6,0.5,0.5);
           scene.add( gltf.scene );  
           
@@ -81,8 +84,6 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
           second.play();
          second.loop = THREE.LoopOnce;
 
-
-
         /*  mixer.addEventListener('finished', function(e){
             if(e.action._clip.name === 'handmove'){
               rotating.reset();
@@ -96,6 +97,11 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
         }, undefined, function ( error ) {
           console.error( error );
         } );
+
+        
+        //augmented realty part
+        const button = ARButton.createButton(renderer);
+        document.body.appendChild(button);
 			
         window.onresize = function () {
 
@@ -105,6 +111,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
           renderer.setSize( window.innerWidth, window.innerHeight );
   
         };
+
 
 			function animate() {
         controls.update();
