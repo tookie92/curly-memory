@@ -5,12 +5,12 @@ import gsap from "gsap"
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {ARButton} from 'three/addons/webxr/ARButton.js';
 
        //Scene declared
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xbfe3dd)
       const container = document.getElementById('container');
-      document.body.appendChild(container);
       
 
       //Camera
@@ -39,7 +39,8 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.setPixelRatio(window.devicePixelRatio);
-			container.appendChild( renderer.domElement );
+      renderer.xr.enabled = true;
+			container.appendChild(renderer.domElement);
 
       const pmremGenerator = new THREE.PMREMGenerator( renderer );
       scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.02 ).texture;
@@ -60,7 +61,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 			const loader = new GLTFLoader();
         loader.load( 'glt/chance/poly/hand.glb', function ( gltf ) {
           const model = gltf.scene;
-          model.position.set(1,0,2);
+          model.position.set(0,-0.5,-10);
           scene.add( gltf.scene );  
   
          
@@ -100,6 +101,11 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
           renderer.setSize( window.innerWidth, window.innerHeight );
   
         };
+        document.body.appendChild(ARButton.createButton(renderer));
+
+        const controller = renderer.xr.getController(0);
+        controller.addEventListener('select', loader);
+        scene.add(controller);
 
 			function animate() {
         controls.update();
