@@ -64,34 +64,35 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
           model.position.set(1,0,2);
           //model.scale.set(0.6,0.5,0.5);
           scene.add( gltf.scene );  
-  
+          
          
-
+          const clips = gltf.animations;
           mixer = new THREE.AnimationMixer(model);
-         // const rotating = mixer.clipAction(gltf.animations[0]);
-        // const idleCLip = new THREE.AnimationClip.findByName(gltf.animations[0], 'Idle')
-          const rotating = mixer.clipAction(gltf.animations[0]);
+
+          //hand rotation
+         const rotateCLip = THREE.AnimationClip.findByName(clips, 'handmove')
+          const rotating = mixer.clipAction(rotateCLip);
           rotating.play();
-          rotating.loop = THREE.LoopOnce;
+         rotating.loop = THREE.LoopOnce;
 
-          const second = mixer.clipAction(gltf.animations[2]);
+         //Armature Move
+         const armaturMove = THREE.AnimationClip.findByName(clips, 'Armaturemove')
+          const second = mixer.clipAction(armaturMove);
           second.play();
-          second.loop = THREE.LoopOnce;
+         second.loop = THREE.LoopOnce;
 
 
 
-          mixer.addEventListener('finished', function(e){
-            if(e.clipAction(gltf.animations[0])){
+        /*  mixer.addEventListener('finished', function(e){
+            if(e.action._clip.name === 'handmove'){
               rotating.reset();
               rotating.play();
             }
-            else if(e.clipAction(gltf.animations[1])){
+           else if(e.action._clip.name === 'Armaturemove'){
               second.reset();
               second.play();
             }
-           
-            
-          })
+          })*/
         }, undefined, function ( error ) {
           console.error( error );
         } );
