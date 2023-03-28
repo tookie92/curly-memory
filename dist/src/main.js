@@ -7,7 +7,6 @@ import { ARButton } from 'three/addons/webxr/ARButton.js';
 
 
 
-const clock = new THREE.Clock();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth /window.innerHeight, 0.1, 100)
 camera.position.set(5,2,8);
 const container = document.getElementById('container');
@@ -36,28 +35,44 @@ controls.target.set(0,1,0);
 controls.update();
 controls.enablePan = false;
 controls.enableDamPing = true;
+controls.enableZoom = false
 
 //Add 3d Model
 const loader = new GLTFLoader();
-loader.load('dist/assets/hand.glb',function(gltf){
+loader.load('/dist/assets/hand.glb',function(glb){
 
-    const model = gltf.scene;
-    model.position.set(0,0.5,-5);
+    const model = glb.scene;
     scene.add(model);
+    model.position.set(0,0.5,-5);
+    
 
+
+    const clips = glb.animations;
     mixer = new THREE.AnimationMixer(model);
-    mixer.clipAction(gltf.animations[0]).play();
+    
 
+
+    const rotateAction= THREE.AnimationClip.findByName(clips, 'handmove');
+    const rotateMove = mixer.clipAction(rotateAction);
+    rotateMove.play();
+    rotateMove.loop = THREE.LoopOnce;
+
+    const armatureAction= THREE.AnimationClip.findByName(clips, 'Armaturemove');
+    const armatureMove = mixer.clipAction(armatureAction);
+    armatureMove.play();
+    armatureMove.loop = THREE.LoopOnce;
+
+    
     animate();
 }, undefined, function(e){
     console.error(e);
 
 });
 
+const clock = new THREE.Clock();
 window.onresize = function(){
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
@@ -68,5 +83,7 @@ function animate(){
     controls.update();
     renderer.render(scene, camera);
 }
+
+
 
 
