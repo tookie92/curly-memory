@@ -39,7 +39,7 @@ controls.enableDamPing = true;
 
 //Add 3d Model
 const loader = new GLTFLoader();
-loader.load('./assets/hand.glb',function(gltf){
+loader.load('dist/assets/hand.glb',function(gltf){
 
     const model = gltf.scene;
     model.position.set(0,0.5,-5);
