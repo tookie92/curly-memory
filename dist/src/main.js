@@ -1,4 +1,4 @@
-import * as THREE from'https://unpkg.com/three/build/three.module.js';
+import * as THREE from 'https://unpkg.com/three/build/three.module.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import{RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js'
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
